@@ -1,50 +1,43 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography.X509Certificates;
-
-namespace BinaryGapLib
+﻿namespace BinaryGapLib
 {
     public class BinaryConverter
     {
-        private uint _binaryGap;
-        private int _binaryGapsAmount = 0;
-
         public int BinaryGapsAmount(uint integer)
         {
+            var binaryGapsAmount = 0;
             string[] binary = ConvertToBinary(integer);
             foreach (var bin in binary)
             {
                 if (bin.Contains('0'))
                 {
-                    _binaryGapsAmount++;
+                    binaryGapsAmount++;
                 }
             }
-            return _binaryGapsAmount;
+            return binaryGapsAmount;
         }
 
-        public uint CalculateZerosInBinaryGap(uint integer)
+        public int[] ReturnGapsLengthForEachGap(uint integer)
         {
-            _binaryGapsAmount = BinaryGapsAmount(integer);
             string[] binary = ConvertToBinary(integer);
+            List<int> zeros = new List<int>();
+            var binaryGap = 0;
 
-            if (_binaryGapsAmount == 1)
+            foreach (var bin in binary)
             {
-                foreach (var bin in binary)
+                if (bin.Contains('0'))
                 {
-                    if (bin.Contains('0'))
-                    {
-                        _binaryGap = (uint)bin.Length;
-                    }
-                    else
-                        continue;
+                    binaryGap = bin.Length;
+                    zeros.Add(binaryGap);
                 }
+                else
+                    continue;
             }
-            else if (_binaryGapsAmount > 1)
-            {
+            return zeros.ToArray();
+        }
 
-            }
-            else
-                _binaryGap = 0;
-            return _binaryGap;
+        public int ReturnTheSizeOfABiggestGap(int[] array)
+        {
+            return array.Max();
         }
 
         private static string[] ConvertToBinary(uint integer)
